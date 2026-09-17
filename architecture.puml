@@ -1,0 +1,26 @@
+@startuml
+title AeroResolve - Complete Solution Architecture
+
+actor Customer
+rectangle "Streamlit Prototype" as UI
+rectangle "Intent + Entity Layer" as NLP
+database "Assignment Data Pack" as DB
+rectangle "Policy Engine" as PE
+rectangle "Guardrail Gate" as GG
+rectangle "Resolution Composer" as RC
+rectangle "Human Agent / Supervisor" as HUMAN
+rectangle "Audit / Source Trace" as AUDIT
+
+Customer --> UI : message
+UI --> NLP : text
+NLP --> DB : customer/booking lookup
+DB --> PE : facts + rules
+NLP --> PE : intent + entities
+PE --> GG : proposed allowed action
+GG --> RC : permitted
+GG --> HUMAN : prohibited / escalation
+RC --> UI : response + actions
+PE --> AUDIT : decision + sources
+GG --> AUDIT : escalation reason
+AUDIT --> UI : trace
+@enduml
